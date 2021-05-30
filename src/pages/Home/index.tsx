@@ -17,8 +17,17 @@ interface SearchFormData {
   search: string;
 }
 
+interface ResultData {
+  pessoa: {
+    cadastral: any;
+  };
+}
+
 const Home: React.FC = () => {
   const formRef = useRef<FormHandles>(null)
+
+  const [hasResults, setHasResults] = useState(false)
+  const [results, setResults] = useState<ResultData[]>([])
 
   const [buttonIcon, setButtonIcon] = useState(<FaSearch />)
   const [buttonText, setButtonText] = useState('Consultar')
@@ -35,8 +44,15 @@ const Home: React.FC = () => {
           setButtonText('Consultando...')
           setIsErrored(false)
 
-          const response = await api.post(`?consultar=${data.search}&tipo=${data.type}`)
+          const response = await api.post(`?consultar=${data.search}&tipo=${data.type.toLowerCase()}`)
           if (response.data.retorno === 'ERRO') throw new Error(response.data.msg)
+
+          if (response.data.msg && response.data.msg.length) {
+            setHasResults(true)
+            setResults(response.data.msg)
+            console.log('aaaa', response.data.msg);
+
+          }
 
           setIsLoading(false)
           setButtonIcon(<FaSearch />)
@@ -85,7 +101,7 @@ const Home: React.FC = () => {
 
             <div className="searchInput">
               <p>Informe o {searchType.toLowerCase()}</p>
-              <Input name="search" icon={FaPen} placeholder={`${searchType} para pesquisa`} />
+              <Input type={searchType === 'Nome' ? "text" : "number"} name="search" icon={FaPen} placeholder={`${searchType} para pesquisa`} />
             </div>
           </div>
 
@@ -97,25 +113,20 @@ const Home: React.FC = () => {
           </div>
         </Form>
 
-        <SearchList>
-          <Result>
-            <p>João Silva Fernandes</p>
-            <p>321.456.879-99</p>
-            <button><FaPlus /> <p>Ver mais</p></button>
-          </Result>
-
-          <Result>
-          <p>Marco Aurélio</p>
-            <p>254.112.494-75</p>
-            <button><FaPlus /> <p>Ver mais</p></button>
-          </Result>
-
-          <Result>
-            <p>Cristiano Félix Raimundo</p>
-            <p>888.572.874-77</p>
-            <button><FaPlus /> <p>Ver mais</p></button>
-          </Result>
-        </SearchList>
+        {
+          hasResults &&
+          <SearchList>
+            {
+              results && results.length && results.map(result => (
+                <Result key={result.pessoa.cadastral.cpf}>
+                  <p>{result.pessoa.cadastral.nomePrimeiro} {result.pessoa.cadastral.nomeUltimo}</p>
+                  <p>{result.pessoa.cadastral.CPF}</p>
+                  <button><FaPlus /> <p>Ver mais</p></button>
+                </Result>
+              ))
+            }
+          </SearchList>
+        }
       </Container>
     </>
   )
