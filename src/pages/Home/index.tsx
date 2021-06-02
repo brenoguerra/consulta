@@ -11,6 +11,7 @@ import { Container, SearchList, Result } from './styles'
 import Button from '../../components/Button'
 import Input from '../../components/Input'
 import Select from '../../components/Select'
+import Modal from '../../components/Modal'
 
 interface SearchFormData {
   type: string;
@@ -20,6 +21,37 @@ interface SearchFormData {
 interface ResultData {
   pessoa: {
     cadastral: any;
+  };
+}
+
+interface PersonData {
+  cadastral?: {
+    CPF?: string;
+    nomePrimeiro?: string;
+    nomeMeio?: string;
+    nomeUltimo?: string;
+    nomnomeParentesco?: string;
+    sexo?: string;
+    dataNascimento?: string;
+    statusReceitaFederal?: string;
+    dataAtualizacaoStatusReceitaFederal?: string;
+    rgNumero?: string;
+    rgOrgaoEmissor?: string;
+    rgUf?: string;
+    tituloEleitoral?: string;
+    obito?: string;
+    nacionalidade?: string;
+    menorDeIdade?: string;
+    ppp?: string;
+    estadoCivil?: string;
+    maeCPF?: string;
+    maeNomePrimeiro?: string;
+    maeNomeMeio?: string;
+    maeNomeUltimo?: string;
+    maeNomeParentesco?: string;
+    escolaridade?: string;
+    cns?: string;
+    pep?: string;
   };
 }
 
@@ -34,6 +66,8 @@ const Home: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [searchType, setSearchType] = useState('Nome')
   const [isErrored, setIsErrored] = useState(false)
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [data, setData] = useState<PersonData>({} as PersonData)
 
   const handleSubmit = useCallback(
     async (data: SearchFormData) => {
@@ -50,8 +84,6 @@ const Home: React.FC = () => {
           if (response.data.msg && response.data.msg.length) {
             setHasResults(true)
             setResults(response.data.msg)
-            console.log('aaaa', response.data.msg);
-
           }
 
           setIsLoading(false)
@@ -118,7 +150,10 @@ const Home: React.FC = () => {
           <SearchList>
             {
               results && results.length && results.map(result => (
-                <Result key={result.pessoa.cadastral.cpf}>
+                <Result key={result.pessoa.cadastral.cpf} onClick={() => {
+                  setData(result.pessoa)
+                  setIsModalVisible(true)
+                }}>
                   <p>{result.pessoa.cadastral.nomePrimeiro} {result.pessoa.cadastral.nomeUltimo}</p>
                   <p>{result.pessoa.cadastral.CPF}</p>
                   <button><FaPlus /> <p>Ver mais</p></button>
@@ -126,6 +161,12 @@ const Home: React.FC = () => {
               ))
             }
           </SearchList>
+        }
+
+        {
+          data && isModalVisible && (
+            <Modal onClose={() => setIsModalVisible(false)} data={data} />
+          )
         }
       </Container>
     </>
