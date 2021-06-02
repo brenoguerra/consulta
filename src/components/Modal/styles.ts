@@ -147,6 +147,7 @@ export const SelectButton = styled.div<SelectButtonProps>`
         margin-right: 0;
       }
     }
+  }
 
   ${props => props.selected && css`
     border: double 2px transparent;
