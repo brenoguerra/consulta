@@ -4,7 +4,6 @@ import { ImProfile } from 'react-icons/im'
 import { BiLink } from 'react-icons/bi'
 import { FaAddressBook } from 'react-icons/fa'
 import { GiCash } from 'react-icons/gi'
-import { RiCommunityLine } from 'react-icons/ri'
 
 import { Container, Content, SelectBar, SelectButton, TextContent } from './styles'
 
@@ -66,7 +65,11 @@ interface ModalProps extends HtmlHTMLAttributes<HTMLDivElement> {
       }];
     };
     vinculo?: {
-      parentesco?: [object];
+      parentesco?: [{
+        cpf?: string;
+        nomeCompleto?: string;
+        grauDeParentesco?: string;
+      }];
       conjuge?: {
         nomePrimeiro?: string;
         nomeMeio?: string;
@@ -240,7 +243,9 @@ const Modal: React.FC<ModalProps> = ({
                 data.vinculo?.parentesco && data.vinculo?.parentesco.map(parentesco => (
                   <>
                     <br />
-                    <p>Parentesco: <strong>{parentesco}</strong></p>
+                    <p>Nome: <strong>{parentesco.nomeCompleto}</strong></p>
+                    <p>CPF: <strong>{parentesco.cpf}</strong></p>
+                    <p>Grau de parentesco: <strong>{parentesco.grauDeParentesco}</strong></p>
                   </>
                 ))
               }

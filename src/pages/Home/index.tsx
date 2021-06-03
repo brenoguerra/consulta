@@ -80,7 +80,11 @@ interface PersonData {
     }];
   };
   vinculo?: {
-    parentesco?: [object];
+    parentesco?: [{
+      cpf?: string;
+      nomeCompleto?: string;
+      grauDeParentesco?: string;
+    }];
     conjuge?: {
       nomePrimeiro?: string;
       nomeMeio?: string;
