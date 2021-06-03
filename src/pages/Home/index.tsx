@@ -30,7 +30,7 @@ interface PersonData {
     nomePrimeiro?: string;
     nomeMeio?: string;
     nomeUltimo?: string;
-    nomnomeParentesco?: string;
+    nomeParentesco?: string;
     sexo?: string;
     dataNascimento?: string;
     statusReceitaFederal?: string;
@@ -52,6 +52,68 @@ interface PersonData {
     escolaridade?: string;
     cns?: string;
     pep?: string;
+  };
+  beneficiarioProgramaSocial?: {
+    bolsaFamilia?: string;
+  };
+  contato?: {
+    endereco?: [{
+      tipoLogradouro?: string;
+      logradouro?: string;
+      numero?: string;
+      complemento?: string;
+      bairro?: string;
+      cidade?: string;
+      uf?: string;
+      cep?: string;
+    }];
+    email?: [{
+      email?: string;
+    }];
+    telefone?: [{
+      ddd?: string;
+      numero?: string;
+      operadora?: string;
+      procon?: string;
+      whatsapp?: string;
+      tipoTelefone?: string;
+    }];
+  };
+  vinculo?: {
+    parentesco?: [object];
+    conjuge?: {
+      nomePrimeiro?: string;
+      nomeMeio?: string;
+      nomeUltimo?: string;
+      parentesco?: string;
+    };
+    vizinho?: [{
+      cpf?: string;
+      nomePrimeiro?: string;
+      nomeMeio?: string;
+      nomeUltimo?: string;
+      nomeParentesco?: null;
+    }];
+    empregador?: [{
+      cnpj?: string;
+      razaoSocial?: string;
+      dataAdmissao?: string;
+    }];
+  };
+  patrimonio?: {
+    veiculo?: [{
+      marca?: string;
+      modelo?: string;
+      ano?: string;
+      categoria?: string;
+      subCategoria?: string;
+      classificacao?: string;
+    }];
+    imovel?: [object];
+  };
+  socioDemografico?: {
+    profissao?: string;
+    rendaPresumida?: string;
   };
 }
 
@@ -84,6 +146,8 @@ const Home: React.FC = () => {
           if (response.data.msg && response.data.msg.length) {
             setHasResults(true)
             setResults(response.data.msg)
+          } else {
+            throw new Error('Nenhum resultado encontrado')
           }
 
           setIsLoading(false)
@@ -150,13 +214,13 @@ const Home: React.FC = () => {
           <SearchList>
             {
               results && results.length && results.map(result => (
-                <Result key={result.pessoa.cadastral.cpf} onClick={() => {
-                  setData(result.pessoa)
-                  setIsModalVisible(true)
-                }}>
-                  <p>{result.pessoa.cadastral.nomePrimeiro} {result.pessoa.cadastral.nomeUltimo}</p>
+                <Result key={result.pessoa.cadastral.cpf}>
+                  <p>{result.pessoa.cadastral.nomePrimeiro} {result.pessoa.cadastral.nomeMeio} {result.pessoa.cadastral.nomeUltimo} {result.pessoa.cadastral.nomeParentesco}</p>
                   <p>{result.pessoa.cadastral.CPF}</p>
-                  <button><FaPlus /> <p>Ver mais</p></button>
+                  <button onClick={() => {
+                    setData(result.pessoa)
+                    setIsModalVisible(true)
+                  }}><FaPlus /> <p>Ver mais</p></button>
                 </Result>
               ))
             }

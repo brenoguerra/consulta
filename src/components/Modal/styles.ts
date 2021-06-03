@@ -30,6 +30,8 @@ export const Container = styled.div`
 `
 
 export const Content = styled.div`
+  overflow-y: auto;
+  overflow-x: hidden;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
   background-color: #333;
   opacity: 0.8;
@@ -147,6 +149,10 @@ export const SelectButton = styled.div<SelectButtonProps>`
         margin-right: 0;
       }
     }
+  }
+
+  :hover {
+    cursor: pointer;
   }
 
   ${props => props.selected && css`
