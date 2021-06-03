@@ -113,7 +113,26 @@ interface PersonData {
       subCategoria?: string;
       classificacao?: string;
     }];
-    imovel?: [object];
+    imovel?: [{
+      contribuente?: string;
+      anoExercicio?: string;
+      tipoLogradouro?: string;
+      logradouro?: string;
+      numero?: string;
+      complemento?: string;
+      bairro?: string;
+      cidade?: string;
+      uf?: string;
+      cep?: string;
+      areaTerreno?: string;
+      areaConstruida?: string;
+      valorMQuadradoTerreno?: string;
+      valorMQuadradoConstrucao?: string;
+      quantidadePavimentos?: string;
+      tipoUsoImovel?: string;
+      tipoPadraoConstrucao?: string;
+      tipoTerreno?: string;
+    }];
   };
   socioDemografico?: {
     profissao?: string;

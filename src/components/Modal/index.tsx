@@ -98,7 +98,26 @@ interface ModalProps extends HtmlHTMLAttributes<HTMLDivElement> {
         subCategoria?: string;
         classificacao?: string;
       }];
-      imovel?: [object];
+      imovel?: [{
+        contribuente?: string;
+        anoExercicio?: string;
+        tipoLogradouro?: string;
+        logradouro?: string;
+        numero?: string;
+        complemento?: string;
+        bairro?: string;
+        cidade?: string;
+        uf?: string;
+        cep?: string;
+        areaTerreno?: string;
+        areaConstruida?: string;
+        valorMQuadradoTerreno?: string;
+        valorMQuadradoConstrucao?: string;
+        quantidadePavimentos?: string;
+        tipoUsoImovel?: string;
+        tipoPadraoConstrucao?: string;
+        tipoTerreno?: string;
+      }];
     };
     socioDemografico?: {
       profissao?: string;
@@ -288,6 +307,32 @@ const Modal: React.FC<ModalProps> = ({
                     <p>Categoria: <strong>{veiculo.categoria}</strong></p>
                     <p>Sub categoria: <strong>{veiculo.subCategoria}</strong></p>
                     <p>Classificacao: <strong>{veiculo.classificacao}</strong></p>
+                  </>
+                ))
+              }
+              <br />
+              <h2>Imóveis</h2>
+              {
+                data.patrimonio?.imovel && data.patrimonio?.imovel.map(imovel => (
+                  <>
+                    <br />
+                    <p>Contribuente: <strong>{imovel.contribuente}</strong></p>
+                    <p>Ano exercicio: <strong>{imovel.anoExercicio}</strong></p>
+                    <p>Tipo logradouro: <strong>{imovel.tipoLogradouro}</strong></p>
+                    <p>Numero: <strong>{imovel.logradouro}</strong></p>
+                    <p>Complemento: <strong>{imovel.complemento}</strong></p>
+                    <p>Bairo: <strong>{imovel.bairro}</strong></p>
+                    <p>Cidade: <strong>{imovel.cidade}</strong></p>
+                    <p>Estado: <strong>{imovel.uf}</strong></p>
+                    <p>CEP: <strong>{imovel.cep}</strong></p>
+                    <p>Area do terreno: <strong>{imovel.areaTerreno}</strong></p>
+                    <p>Area construida: <strong>{imovel.areaConstruida}</strong></p>
+                    <p>Valor m² terreno: <strong>{imovel.valorMQuadradoTerreno}</strong></p>
+                    <p>Valor m² construção: <strong>{imovel.valorMQuadradoConstrucao}</strong></p>
+                    <p>Pavimentos: <strong>{imovel.quantidadePavimentos}</strong></p>
+                    <p>Tipo de uso: <strong>{imovel.tipoUsoImovel}</strong></p>
+                    <p>Tipo de construção: <strong>{imovel.tipoPadraoConstrucao}</strong></p>
+                    <p>Tipo de terreno: <strong>{imovel.tipoTerreno}</strong></p>
                   </>
                 ))
               }
