@@ -238,12 +238,22 @@ const Home: React.FC = () => {
             {
               results && results.length && results.map(result => (
                 <Result key={result.pessoa.cadastral.cpf}>
-                  <p>{result.pessoa.cadastral.nomePrimeiro} {result.pessoa.cadastral.nomeMeio} {result.pessoa.cadastral.nomeUltimo} {result.pessoa.cadastral.nomeParentesco}</p>
-                  <p>{result.pessoa.cadastral.CPF}</p>
-                  <button onClick={() => {
-                    setData(result.pessoa)
-                    setIsModalVisible(true)
-                  }}><FaPlus /> <p>Ver mais</p></button>
+                  <div>
+                    <strong>NOME</strong>
+                    <p>{result.pessoa.cadastral.nomePrimeiro} {result.pessoa.cadastral.nomeMeio} {result.pessoa.cadastral.nomeUltimo} {result.pessoa.cadastral.nomeParentesco}</p>
+                  </div>
+
+                  <div>
+                    <strong>CPF</strong>
+                    <p>{result.pessoa.cadastral.CPF}</p>
+                  </div>
+
+                  <div>
+                    <button onClick={() => {
+                      setData(result.pessoa)
+                      setIsModalVisible(true)
+                    }}><FaPlus /> <p>Ver mais</p></button>
+                  </div>
                 </Result>
               ))
             }
