@@ -37,6 +37,17 @@ interface ModalProps extends HtmlHTMLAttributes<HTMLDivElement> {
       escolaridade?: string;
       cns?: string;
       pep?: string;
+      // CNPJ
+      CNPJ?: string;
+      dataAbertura?: string;
+      dataSituacaoCadastral?: string;
+      inscricaoEstadual?: string;
+      matriz?: string;
+      motivoSituacaoCadastral?: string;
+      nomeFantasia?: string;
+      razaoSocial?: string;
+      situacaoCadastral?: string;
+      situacaoEspecial?: string;
     };
     beneficiarioProgramaSocial?: {
       bolsaFamilia?: string;
@@ -123,6 +134,19 @@ interface ModalProps extends HtmlHTMLAttributes<HTMLDivElement> {
       profissao?: string;
       rendaPresumida?: string;
     };
+    // CNPJ
+    firmografico?: {
+      cnae?: [{
+        cnae_codigo?: string;
+        cnae_descricao?: string;
+      }];
+      codigoNaturezaJuridica?: string;
+      descricaoNaturezaJuridica?: string;
+      faixaFaturamento?: string;
+      faixaFuncionario?: string;
+      porte?: string;
+      simples?: string;
+    };
   };
 }
 
@@ -178,35 +202,74 @@ const Modal: React.FC<ModalProps> = ({
           {
             selected === 'cadastral' &&
             <>
-              <p>Nome: <strong>{data.cadastral?.nomePrimeiro} {data.cadastral?.nomeMeio} {data.cadastral?.nomeUltimo} {data.cadastral?.nomeParentesco}</strong></p>
-              <p>CPF: <strong>{data.cadastral?.CPF}</strong></p>
-              <p>
-                RG:
-                <strong>{data.cadastral?.rgNumero}</strong>
+            {
+              data.cadastral?.CPF ?
+              (
+                <>
+                  <p>Nome: <strong>{data.cadastral?.nomePrimeiro} {data.cadastral?.nomeMeio} {data.cadastral?.nomeUltimo} {data.cadastral?.nomeParentesco}</strong></p>
+                  <p>CPF: <strong>{data.cadastral?.CPF}</strong></p>
+                  <p>
+                    RG:
+                    <strong>{data.cadastral?.rgNumero}</strong>
 
-                Orgão Emissor:
-                <strong>{data.cadastral?.rgOrgaoEmissor}</strong>
+                    Orgão Emissor:
+                    <strong>{data.cadastral?.rgOrgaoEmissor}</strong>
 
-                UF:
-                <strong>{data.cadastral?.rgUf}</strong>
-              </p>
-              <p>Data de atualização: <strong>{data.cadastral?.dataAtualizacaoStatusReceitaFederal}</strong></p>
-              <p>Status Receita Federal: <strong>{data.cadastral?.statusReceitaFederal}</strong></p>
-              <p>Nascimento: <strong>{data.cadastral?.dataNascimento}</strong></p>
-              <p>Estado cívil: <strong>{data.cadastral?.estadoCivil}</strong></p>
-              <p>CNS: <strong>{data.cadastral?.cns}</strong></p>
-              <p>Titulo eleitoral: <strong>{data.cadastral?.tituloEleitoral}</strong></p>
-              <p>Sexo: <strong>{data.cadastral?.sexo}</strong></p>
-              <p>Conjuge: <strong>{data.vinculo?.conjuge?.nomePrimeiro} {data.vinculo?.conjuge?.nomeMeio} {data.vinculo?.conjuge?.nomeUltimo} {data.vinculo?.conjuge?.parentesco}</strong></p>
-              <p>Nome da mãe: <strong>{data.cadastral?.maeNomePrimeiro} {data.cadastral?.maeNomeMeio} {data.cadastral?.maeNomeUltimo} {data.cadastral?.maeNomeParentesco}</strong></p>
-              <p>CPF da mãe: <strong>{data.cadastral?.maeCPF}</strong></p>
-              <p>Escolaridade: <strong>{data.cadastral?.escolaridade}</strong></p>
-              <p>Menor de idade: <strong>{data.cadastral?.menorDeIdade !== '0' ? 'SIM' : 'NÃO'}</strong></p>
-              <p>Nacionalidade: <strong>{data.cadastral?.nacionalidade}</strong></p>
-              <p>Óbito: <strong>{data.cadastral?.obito !== '0' ? 'SIM' : 'NÃO'}</strong></p>
-              <p>Bolsa Família: <strong>{data.beneficiarioProgramaSocial?.bolsaFamilia}</strong></p>
-              <p>Profissão: <strong>{data.socioDemografico?.profissao}</strong></p>
-              <p>Renda presumida: <strong>{data.socioDemografico?.rendaPresumida}</strong></p>
+                    UF:
+                    <strong>{data.cadastral?.rgUf}</strong>
+                  </p>
+                  <p>Data de atualização: <strong>{data.cadastral?.dataAtualizacaoStatusReceitaFederal}</strong></p>
+                  <p>Status Receita Federal: <strong>{data.cadastral?.statusReceitaFederal}</strong></p>
+                  <p>Nascimento: <strong>{data.cadastral?.dataNascimento}</strong></p>
+                  <p>Estado cívil: <strong>{data.cadastral?.estadoCivil}</strong></p>
+                  <p>CNS: <strong>{data.cadastral?.cns}</strong></p>
+                  <p>Titulo eleitoral: <strong>{data.cadastral?.tituloEleitoral}</strong></p>
+                  <p>Sexo: <strong>{data.cadastral?.sexo}</strong></p>
+                  <p>Conjuge: <strong>{data.vinculo?.conjuge?.nomePrimeiro} {data.vinculo?.conjuge?.nomeMeio} {data.vinculo?.conjuge?.nomeUltimo} {data.vinculo?.conjuge?.parentesco}</strong></p>
+                  <p>Nome da mãe: <strong>{data.cadastral?.maeNomePrimeiro} {data.cadastral?.maeNomeMeio} {data.cadastral?.maeNomeUltimo} {data.cadastral?.maeNomeParentesco}</strong></p>
+                  <p>CPF da mãe: <strong>{data.cadastral?.maeCPF}</strong></p>
+                  <p>Escolaridade: <strong>{data.cadastral?.escolaridade}</strong></p>
+                  <p>Menor de idade: <strong>{data.cadastral?.menorDeIdade !== '0' ? 'SIM' : 'NÃO'}</strong></p>
+                  <p>Nacionalidade: <strong>{data.cadastral?.nacionalidade}</strong></p>
+                  <p>Óbito: <strong>{data.cadastral?.obito !== '0' ? 'SIM' : 'NÃO'}</strong></p>
+                  <p>Bolsa Família: <strong>{data.beneficiarioProgramaSocial?.bolsaFamilia}</strong></p>
+                  <p>Profissão: <strong>{data.socioDemografico?.profissao}</strong></p>
+                  <p>Renda presumida: <strong>{data.socioDemografico?.rendaPresumida}</strong></p>
+                </>
+              )
+              :
+              (
+                <>
+                  <p>Razão Social: <strong>{data.cadastral?.razaoSocial}</strong></p>
+                  <p>CNPJ: <strong>{data.cadastral?.CNPJ}</strong></p>
+                  <p>Data de Abertura: <strong>{data.cadastral?.dataAbertura}</strong></p>
+                  <p>Status Receita Federal: <strong>{data.cadastral?.statusReceitaFederal}</strong></p>
+                  <p>Situação Cadastral: <strong>{data.cadastral?.situacaoCadastral}</strong></p>
+                  <p>Inscrição Estadual: <strong>{data.cadastral?.inscricaoEstadual}</strong></p>
+                  <p>Matriz: <strong>{data.cadastral?.matriz}</strong></p>
+                  <p>Motivo Situacao Cadastral: <strong>{data.cadastral?.motivoSituacaoCadastral}</strong></p>
+                  <p>Nome Fantasia: <strong>{data.cadastral?.nomeFantasia}</strong></p>
+                  <p>Situação Cadastral: <strong>{data.cadastral?.situacaoCadastral}</strong></p>
+                  <p>Situação Especial: <strong>{data.cadastral?.situacaoEspecial}</strong></p>
+                  <p>Faturamento: <strong>{data.firmografico?.faixaFaturamento}</strong></p>
+                  <p>Funcionários: <strong>{data.firmografico?.faixaFuncionario}</strong></p>
+                  <p>Porte: <strong>{data.firmografico?.porte}</strong></p>
+                  <p>Simples: <strong>{data.firmografico?.simples}</strong></p>
+
+                  <br />
+                  <h2>CNAE</h2>
+                  {
+                    data.firmografico?.cnae && data.firmografico?.cnae.map(cnae => (
+                      <>
+                        <br />
+                        <p>Código: <strong>{cnae.cnae_codigo}</strong></p>
+                        <p>Descrição: <strong>{cnae.cnae_descricao}</strong></p>
+                      </>
+                    ))
+                  }
+                </>
+              )
+            }
             </>
           }
           {

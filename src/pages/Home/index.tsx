@@ -22,6 +22,9 @@ interface ResultData {
   pessoa: {
     cadastral: any;
   };
+  empresa: {
+    cadastral: any;
+  };
 }
 
 interface PersonData {
@@ -52,6 +55,17 @@ interface PersonData {
     escolaridade?: string;
     cns?: string;
     pep?: string;
+    // CNPJ
+    CNPJ?: string;
+    dataAbertura?: string;
+    dataSituacaoCadastral?: string;
+    inscricaoEstadual?: string;
+    matriz?: string;
+    motivoSituacaoCadastral?: string;
+    nomeFantasia?: string;
+    razaoSocial?: string;
+    situacaoCadastral?: string;
+    situacaoEspecial?: string;
   };
   beneficiarioProgramaSocial?: {
     bolsaFamilia?: string;
@@ -137,6 +151,19 @@ interface PersonData {
   socioDemografico?: {
     profissao?: string;
     rendaPresumida?: string;
+  };
+  // CNPJ
+  firmografico?: {
+    cnae?: [{
+      cnae_codigo?: string;
+      cnae_descricao?: string;
+    }];
+    codigoNaturezaJuridica?: string;
+    descricaoNaturezaJuridica?: string;
+    faixaFaturamento?: string;
+    faixaFuncionario?: string;
+    porte?: string;
+    simples?: string;
   };
 }
 
@@ -237,20 +264,27 @@ const Home: React.FC = () => {
           <SearchList>
             {
               results && results.length && results.map(result => (
-                <Result key={result.pessoa.cadastral.cpf}>
+                <Result key={result.pessoa?.cadastral?.CPF || result.empresa?.cadastral?.CNPJ}>
                   <div>
                     <strong>NOME</strong>
-                    <p>{result.pessoa.cadastral.nomePrimeiro} {result.pessoa.cadastral.nomeMeio} {result.pessoa.cadastral.nomeUltimo} {result.pessoa.cadastral.nomeParentesco}</p>
+                    <p>
+                      {
+                        result.pessoa && result.pessoa.cadastral && result.pessoa.cadastral.CPF ?
+                        `${result.pessoa.cadastral.nomePrimeiro} ${result.pessoa.cadastral.nomeMeio} ${result.pessoa.cadastral.nomeUltimo} ${result.pessoa.cadastral.nomeParentesco}`
+                        : `${result.empresa.cadastral.razaoSocial}`
+                      }
+                    </p>
+                    {/* <p>{result.pessoa.cadastral.nomePrimeiro} {result.pessoa.cadastral.nomeMeio} {result.pessoa.cadastral.nomeUltimo} {result.pessoa.cadastral.nomeParentesco}</p> */}
                   </div>
 
                   <div>
-                    <strong>CPF</strong>
-                    <p>{result.pessoa.cadastral.CPF}</p>
+                    <strong>{ result.pessoa?.cadastral.CPF ? 'CPF' : 'CNPJ' }</strong>
+                    <p>{ result.pessoa?.cadastral.CPF ? result.pessoa?.cadastral?.CPF : result.empresa?.cadastral?.CNPJ }</p>
                   </div>
 
                   <div>
                     <button onClick={() => {
-                      setData(result.pessoa)
+                      setData(result.pessoa || result.empresa)
                       setIsModalVisible(true)
                     }}><FaPlus /> <p>Ver mais</p></button>
                   </div>
