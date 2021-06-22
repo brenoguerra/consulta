@@ -3,8 +3,9 @@ import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
 
 import api from '../../services/api'
+import { useAuth } from '../../hooks/AuthContext';
 
-import { FaSearch, FaPen, FaSpinner, FaPlus, FaExclamationCircle } from 'react-icons/fa'
+import { FaSearch, FaPen, FaSpinner, FaPlus, FaExclamationCircle, FaPowerOff } from 'react-icons/fa'
 
 import { Container, SearchList, Result } from './styles'
 
@@ -181,6 +182,8 @@ const Home: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [data, setData] = useState<PersonData>({} as PersonData)
 
+  const { token, user, signOut } = useAuth()
+
   const handleSubmit = useCallback(
     async (data: SearchFormData) => {
       if (!isLoading) {
@@ -190,7 +193,13 @@ const Home: React.FC = () => {
           setButtonText('Consultando...')
           setIsErrored(false)
 
-          const response = await api.post(`?consultar=${data.search}&tipo=${data.type.toLowerCase()}`)
+          const response = await api.post('/queries',
+            { type: data.type.toLowerCase(), filter: data.search },
+            { headers: {
+              Authorization: `Bearer ${token}`
+            } }
+          )
+
           if (response.data.retorno === 'ERRO') throw new Error(response.data.msg)
 
           if (response.data.msg && response.data.msg.length) {
@@ -204,8 +213,13 @@ const Home: React.FC = () => {
           setButtonIcon(<FaSearch />)
           setButtonText('Consultar')
         } catch (error) {
+          if (String(error).includes('400')) {
+            setButtonText('API em manutenção')
+          } else if (String(error).includes('401')) {
+            setButtonText('Sem acesso')
+          }
+
           setButtonIcon(<FaExclamationCircle />)
-          setButtonText(error.message)
 
           setIsErrored(true)
 
@@ -218,7 +232,7 @@ const Home: React.FC = () => {
           }, 4000)
         }
       }
-    }, [isLoading]
+    }, [isLoading, token]
   )
 
   const handleChangeSearchType = useCallback(() => {
@@ -257,7 +271,17 @@ const Home: React.FC = () => {
               {buttonText}
             </Button>
           </div>
+
+          <h1 className="expireText">{
+            new Date() < new Date(user.expireAt) ?
+            `Acesso até ${new Date(user.expireAt).toLocaleString('pt-BR').replace(' ', ' às ')}`
+            : 'Acesso expirado'
+          }</h1>
         </Form>
+        <p className="logoutButton" onClick={(e) => {
+          e.preventDefault()
+          signOut()
+        }}><FaPowerOff size={18} /></p>
 
         {
           hasResults &&

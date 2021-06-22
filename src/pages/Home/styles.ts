@@ -63,6 +63,15 @@ export const Container = styled.div`
     p {
       margin-bottom: 8px;
     }
+
+    .expireText {
+      font-size: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 12px;
+      font-weight: 400;
+    }
   }
 
   .searchButton {
@@ -75,6 +84,16 @@ export const Container = styled.div`
     button {
       height: 50px;
       width: 100%;
+    }
+  }
+
+  .logoutButton {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+
+    :hover {
+      cursor: pointer;
     }
   }
 `
